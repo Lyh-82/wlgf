@@ -1,0 +1,42 @@
+<span style="font-size:12px;">int main(int argc, const char * argv[])
+{
+ 
+    struct sockaddr_in serverAdd;
+    struct sockaddr_in clientAdd;
+    
+    bzero(&serverAdd, sizeof(serverAdd));
+    serverAdd.sin_family = AF_INET;
+    serverAdd.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverAdd.sin_port = htons(SERV_PORT);
+    
+    socklen_t clientAddrLen;
+    
+    int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    int yes = 1;
+    setsockopt(listenfd,
+               SOL_SOCKET, SO_REUSEADDR,
+               (void *)&yes, sizeof(yes));
+    
+    if (listenfd < 0) {
+        printf("创建socket失败\n");
+        close(listenfd);
+        return -1;
+    }
+    
+    int bindResult = bind(listenfd, (struct sockaddr *)&serverAdd, sizeof(serverAdd));
+    if (bindResult < 0) {
+        close(listenfd);
+        printf("绑定端口失败，errno ＝ %d\n",errno);
+        return -1;
+    }
+    else
+    {
+        printf("绑定端口成功\n");
+    }
+    
+//    listen(listenfd, 20);
+    sleep(60*5);
+ 
+    return 0;
+}
+</span>

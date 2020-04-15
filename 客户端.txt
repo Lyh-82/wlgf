@@ -1,0 +1,26 @@
+<span style="font-size:12px;">int main(int argc, const char * argv[])
+{
+ 
+    struct sockaddr_in serverAdd;
+    
+    bzero(&serverAdd, sizeof(serverAdd));
+    serverAdd.sin_family = AF_INET;
+    serverAdd.sin_addr.s_addr = inet_addr(SERV_ADDR);
+    serverAdd.sin_port = htons(SERV_PORT);
+    
+    int connfd = socket(AF_INET, SOCK_STREAM, 0);
+ 
+    int connResult = connect(connfd, (struct sockaddr *)&serverAdd, sizeof(serverAdd));
+    if (connResult < 0) {
+        printf("连接失败，errno ＝ %d\n",errno);
+        close(connfd);
+        return -1;
+    }
+    else
+    {
+        printf("连接成功\n");
+    }
+    close(connfd);
+    return 0;
+}
+</span>
